@@ -2,10 +2,7 @@ import requests
 import json
 import pandas as pd
 import time
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
-import psycopg2 as pg
+import psycopg2 as pg   #psycopg2-binary
 from sqlalchemy import create_engine
 
 
@@ -108,6 +105,6 @@ df=json_to_dataframe(stream_dict)
 df.rename(columns = {'id': 'stream_id','type': 'stream_type'},inplace = True)
 curr_time = time.strftime("%Y-%m-%d %H:%M:%S",time.gmtime())
 df['time_logged'] = curr_time
-
-engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
-df.to_sql('stream_data', engine, if_exists='append',index=False)
+df
+# engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
+# df.to_sql('stream_data', engine, if_exists='append',index=False)
