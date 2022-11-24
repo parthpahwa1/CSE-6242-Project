@@ -54,6 +54,18 @@ def get_game_ids(clientID = clientID,app_access_token = app_access_token):
 
 def push_gameids_to_SQL(r):
     game_df = pd.json_normalize(json.loads(r.text)['data'])
+
+
+    """
+    drop the column igdb_id to be dropped
+
+    """
+    # Method 1 - dropping
+    game_df = game_df.drop(['igdb_id'], axis=1)
+    # Method 2 - keeping
+    # game_df = game_df[['id', 'name', 'box_art_url']]
+
+
     curr_time = time.strftime("%Y-%m-%d %H:%M:%S",time.gmtime())
     game_df['time_logged'] = curr_time
     game_df.rename(columns = {'id': 'game_id','name': 'game_name','box_art_url': 'pic_url'},inplace = True)
@@ -124,9 +136,11 @@ def run_all():
     curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
     df['time_logged'] = curr_time
 
-    engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
-    df.to_sql('stream_data', engine, if_exists='append', index=False)
-    print("finished")
+    # engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
+    # df.to_sql('stream_data', engine, if_exists='append', index=False)
+    # print("finished")
+
+    df.to_csv("test")
 
 run_all()
 
