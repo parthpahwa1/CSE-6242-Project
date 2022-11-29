@@ -136,28 +136,35 @@ Tableau settings:
 
 ## Installation
 
-### Data
-
-Please make sure the data prerequisites are met by following instructions presented in the `README.md` file here.
-
 ### Tokens
 
 The tokens have been provided in the file directly. They will be change after the grading period.
 
 ### Environment
 
-Our team has been using [VS Code](https://code.visualstudio.com/download) and p
-
-to un the following code in terminal before running the `main.ipynb` notebook:
+Requires Python 3.11
 ```http
   python3 --version
+```
+
+Please run the following code in terminal before running the `main.ipynb` notebook:
+```http
   pip install -r requirements.txt
 ```
+
+
+
+
 
 
 ## Execution
 
 nothing yet
+
+
+
+
+
 
 ## Authors
 
