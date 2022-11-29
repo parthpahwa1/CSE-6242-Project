@@ -18,6 +18,9 @@ Moreover, we are helping streaming players develop their channel by picking the 
     - [AWS - PostgreSQL](#6-aws---postgresql)
     - [Tableau](#7-tableau)
  - [Installation](#installation)
+     - [Tokens](#tokens)
+    - [Environment](#environment)
+
  - [Execution](#execution)
 
 
