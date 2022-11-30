@@ -31,7 +31,7 @@ class Inference:
         stream_data = self.data_processsor.filter_for_stream_length(stream_data)
         stream_data = self.data_processsor.get_sentiment(stream_data)
         
-
+        stream_data.head(5)
         # Feature_engineering
         df_with_features = self.data_processsor.perform_feature_engineering(stream_data)
 

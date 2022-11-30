@@ -190,6 +190,6 @@ nothing yet
 
 - [@hugodup](https://github.com/hugodup)
 - [@parthpahwa1](https://github.com/parthpahwa1)
-- [@dean](https://github.com/dean)
+- [@deangarmcode](https://github.com/deangarmcode)
 - [@blackjacc](https://github.com/blackjacc)
 - [@lliu442](https://github.com/lliu442)

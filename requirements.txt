@@ -5,3 +5,4 @@ pandas
 time
 psycopg2
 sqlalchemy
+nltk
