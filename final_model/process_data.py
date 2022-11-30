@@ -64,6 +64,19 @@ class ProcessStreamData():
 
         return df
     
+    def get_prediction_dictionary(self, stream_data):
+        """
+        Dictionary with following hierarcy
+
+        -time slot
+            - game name
+                - DataFrame with targets 
+
+        """ 
+        feauture_column_names = list(stream_data.columns)[3:]
+        return stream_data.groupby(['time_logged_encoded', 'game_name'])[feauture_column_names].mean().reset_index()
+
+
     def get_training_dictionary(self, stream_data):
         """
         Dictionary with following hierarcy

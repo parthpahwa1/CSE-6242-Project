@@ -13,7 +13,7 @@ class MAB:
         self.GAME_NAMES_FILE_LOC = "./Resources/game_names.pkl"
 
         self.NUM_PREFERECES = 6
-        self.NUM_SAMPLED_PREFERENCES = 512
+        self.NUM_SAMPLED_PREFERENCES = 256
 
         self.context_features_list = [
             'mean_viewer_count',
@@ -105,14 +105,22 @@ class MAB:
         
 
         FINAL_MODEL = model[timesplit]
-        p_vector = []
+        p_vector = {}
         for i in range(0, FINAL_MODEL.shape[0]):
             game_name = self.GAME_INDEX_NAME_MAP[timesplit][i]
             arm = FINAL_MODEL[i]
-
-            INPUT = SCALER_DICTIONRY.transform(input[input['game_name']==game_name][self.context_features_list])
-            INPUT = np.concatenate((INPUT, preference.reshape(1,-1).repeat(INPUT.shape[0], axis=0)), axis=1)
-            p_vector.append(arm.dot(INPUT))
+            
+            eval_data = input[input['game_name']==game_name][self.context_features_list]
+            if eval_data.shape[0] > 0:
+                INPUT = SCALER_DICTIONRY.transform(eval_data)
+                INPUT = np.concatenate((INPUT, preference.reshape(1,-1).repeat(INPUT.shape[0], axis=0)), axis=1).reshape(-1)
+                # print(INPUT)
+                # print(arm)
+                # print(INPUT.shape)
+                # print(arm.shape)
+                p_vector[game_name] = arm.dot(INPUT)
+            else:
+                p_vector[game_name] = 0
         
         return p_vector
 
@@ -167,7 +175,7 @@ class MAB:
 
 
                     if temp_data.shape[0] > 0:
-                        X[i] = self.SCALER_DICTIONRY[time_split].transform(temp_data)
+                        X[i] = np.clip(self.SCALER_DICTIONRY[time_split].transform(temp_data), None, 2)
                         X[i] = np.concatenate((X[i], preference.reshape(1,-1).repeat(X[i].shape[0], axis=0)), axis=1)
 
                         for trails in range(n_trials):
@@ -184,6 +192,7 @@ class MAB:
                 ) 
                 for alpha in self.alphas
             }
+            
 
             def plot_regrets(results, oracles, time_slot):
                 [plt.plot(self.make_regret(payoffs=x['r_payoffs'], oracles=oracles), label="Time: " + str(time_slot) +
@@ -195,6 +204,8 @@ class MAB:
             plt.legend()
             plt.title("Regret for timesplit="+ str(time_split))
             plt.show()
+
+            break
         
 
         self.save_model_params(results_dict)
@@ -224,25 +235,25 @@ class MAB:
         arm_choice = np.empty(n_trials) # used to store agent's choices for each trial
         r_payoffs = np.empty(n_trials) # used to store the payoff for each trial (the payoff for the selected arm based on the true_theta)
         
-        theta = np.empty(shape=(n_trials, n_arms, n_features)) # used to store the predicted theta over each trial
+        theta = np.empty(shape=(n_trials, n_arms, n_features)) + 1e-6 # used to store the predicted theta over each trial
         p = np.empty(shape=(n_trials, n_arms)) # used to store predictions for reward of each arm for each trial
         
         # Lin UCB Objects
-        A = np.array([np.diag(np.ones(shape=n_features)) for _ in np.arange(n_arms)]) # A is the matrix defined as :math:A_a = D_a^TD_a + I_d, and for the initialization it is I_d and will be updated after every trial
-        b = np.array([np.zeros(shape=n_features) for _ in np.arange(n_arms)]) # b is the matrix defined as response vectors (reward for each feature for each arm at each trial, initialized to zero for all features of all arms at every trial)
+        A = np.array([np.diag(np.ones(shape=n_features)) for _ in np.arange(n_arms)]) + 1e-6 # A is the matrix defined as :math:A_a = D_a^TD_a + I_d, and for the initialization it is I_d and will be updated after every trial
+        b = np.array([np.zeros(shape=n_features) for _ in np.arange(n_arms)]) + 1e-6 # b is the matrix defined as response vectors (reward for each feature for each arm at each trial, initialized to zero for all features of all arms at every trial)
         
         # The algorithm
-        for epoch in range(5):
+        for epoch in range(100):
             for t in range(n_trials):
                 # compute the estimates (theta) and prediction (p) for all arms
                 for a in range(n_arms):
                     if np.isnan(X[t, a]).any():
                         X[t, a] = np.nan_to_num(X[t, a], nan=1e-5)
-                        p[t, a] = np.random.uniform(0, 1.0/n_arms)
+                        p[t, a] = np.random.uniform(0, 1.0/(epoch+1))
                     else:
                         inv_A = np.linalg.inv(A[a])
                         theta[t, a] = inv_A.dot(b[a]) # estimate theta as from this formula :math:`\hat{\theta}_a = A_a^{-1}b_a`
-                        p[t, a] = theta[t, a].dot(X[t, a]) + alpha * np.sqrt(X[t, a].dot(inv_A).dot(X[t, a])) # predictions is the expected mean + the confidence upper bound
+                        p[t, a] = theta[t, a].dot(X[t, a]) + alpha * np.sqrt(X[t, a].dot(inv_A).dot(X[t, a])) + np.random.uniform(0, 0.8/(epoch+1))# predictions is the expected mean + the confidence upper bound
 
                 # choosing the best arms
                 chosen_arm = np.argmax(p[t])
@@ -252,8 +263,10 @@ class MAB:
 
                 # Update intermediate objects (A and b)
                 A[chosen_arm] += np.outer(x_chosen_arm, x_chosen_arm.T)
+
+
                 b[chosen_arm] += r_payoffs[t]*x_chosen_arm # update the b values for each features corresponding to the pay off and the features of the chosen_arm
-        
+
         return dict(theta=theta, p=p, arm_choice=arm_choice, r_payoffs = r_payoffs)
 
     def generate_metrics(self, df):
