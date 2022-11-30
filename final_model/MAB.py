@@ -13,7 +13,7 @@ class MAB:
         self.GAME_NAMES_FILE_LOC = "./Resources/game_names.pkl"
 
         self.NUM_PREFERECES = 6
-        self.NUM_SAMPLED_PREFERENCES = 256
+        self.NUM_SAMPLED_PREFERENCES = 2048
 
         self.context_features_list = [
             'mean_viewer_count',
@@ -205,7 +205,6 @@ class MAB:
             plt.title("Regret for timesplit="+ str(time_split))
             plt.show()
 
-            break
         
 
         self.save_model_params(results_dict)
@@ -243,7 +242,7 @@ class MAB:
         b = np.array([np.zeros(shape=n_features) for _ in np.arange(n_arms)]) + 1e-6 # b is the matrix defined as response vectors (reward for each feature for each arm at each trial, initialized to zero for all features of all arms at every trial)
         
         # The algorithm
-        for epoch in range(100):
+        for epoch in range(10):
             for t in range(n_trials):
                 # compute the estimates (theta) and prediction (p) for all arms
                 for a in range(n_arms):
