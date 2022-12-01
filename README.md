@@ -79,10 +79,31 @@ We organized data in the format that corresponds to a minimum of 5'000 rows base
 
 [Google Scheduler](https://console.cloud.google.com/products?supportedpurview=project) allows us to to run every hour for a cron job that sends a pub/sub command.
 
+```http
+Bucket settings:
+  • Name > any name
+  • Location type > Multi-region
+  • Create
+
+Scheduler settings:
+	• Create function > Select the function trigger type > Cloud Pub/Sub
+	• Create a topic > Pub/Sub topic which will trigger this cloud function > Save
+  • Give it an appropriate name and click create topic
+  • Connections tab > Allow internal traffic only
+```
+
 ### 4. Google Cloud Platform - Cloud Functions
 
 [Google Cloud Functions](https://console.cloud.google.com/products?supportedpurview=project) helped us to runs the extraction script and saves the information to the AWS Relational Database Service (RDS) database.
 
+```http
+Function settings:
+	• Create function > Select the function trigger type > Cloud Pub/Sub
+	• Create a topic > Pub/Sub topic which will trigger this cloud function > Save
+  • Give it an appropriate name and click create topic
+  • Connections tab > Allow internal traffic only
+  • Runtime environement > Python 3.9 > Deploy
+```
 
 ### 5. AWS - RDS
 
@@ -146,9 +167,9 @@ The tokens have been provided in the file directly. They will be change after th
 
 ### Environment
 
-Requires Python 3.11
+Requires Python 3.9
 ```http
-  python3 --version
+  python --version
 ```
 
 Please run the following code in terminal before running the `main.ipynb` notebook:
