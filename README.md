@@ -79,7 +79,7 @@ We organized data in the format that corresponds to a minimum of 5'000 rows base
 
 [Google Scheduler](https://console.cloud.google.com/products?supportedpurview=project) allows us to to run every hour for a cron job that sends a pub/sub command.
 
-```http
+```bash
 Bucket settings:
   • Name > any name
   • Location type > Multi-region
@@ -96,7 +96,7 @@ Scheduler settings:
 
 [Google Cloud Functions](https://console.cloud.google.com/products?supportedpurview=project) helped us to runs the extraction script and saves the information to the AWS Relational Database Service (RDS) database.
 
-```http
+```bash
 Function settings:
 	• Create function > Select the function trigger type > Cloud Pub/Sub
 	• Create a topic > Pub/Sub topic which will trigger this cloud function > Save
@@ -111,7 +111,7 @@ Function settings:
 
 We use [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
 
-```http
+```bash
 RDS settings:
 	• select Standard create
 	• Engine options > PostgreSQL
@@ -148,7 +148,7 @@ Finally, from this PostGreSQL database, we are able to connect to it with our [T
 
 Click here to view our [Tableau Dashboard](https://dub01.online.tableau.com/t/twitchgamerecommandations/views/Twitch_Game_Recommandation/GameStatisticsDashboard)
 
-```http
+```bash
 Tableau settings:
   • made locally with Student license
   • connected to the PostegreSQL database in "live" mode
@@ -190,7 +190,7 @@ When opening the `Twitch_v1.twbx`, if the PostgreSQL ask you for the credentials
 | `Username` | `GaTech_team_96` | 
 | `Password` | `i-love-my-coffee-without-milk-and-sugar-at-800AM` | 
 
-```http
+```bash
 Tableau:
   • Data Source tab > refresh the data on the top right corner
   • connected to the PostegreSQL database in "live" mode
