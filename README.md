@@ -37,7 +37,7 @@ We created a [Twitch](https://www.twitch.tv) account and connected to the [Devel
 Within the console, we have setup and application and defined the OAuth Redirect URLs and Category to retrieve the Client ID and the Client Secret code. 
 We setup our console as as below:
 
-```http
+```https
   https://dev.twitch.tv/console
 ```
 
@@ -128,7 +128,7 @@ Last  but not least, we are pushing this temporary data to [PostgreSQL](https://
 
 We use [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
 
-```http
+```bash
 Postgres settings
 	• master password: i-love-my-coffee-without-milk-and-sugar-at-800AM
 	• Add New Server
@@ -168,12 +168,12 @@ The tokens have been provided in the file directly. They will be change after th
 ### Environment
 
 Requires Python 3.9
-```http
+```bash
   python --version
 ```
 
 Please run the following code in terminal before running the `main.ipynb` notebook:
-```http
+```bash
   pip install -r requirements.txt
 ```
 
