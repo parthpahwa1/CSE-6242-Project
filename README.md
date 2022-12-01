@@ -86,8 +86,8 @@ Bucket settings:
   • Create
 
 Scheduler settings:
-	• Create function > Select the function trigger type > Cloud Pub/Sub
-	• Create a topic > Pub/Sub topic which will trigger this cloud function > Save
+  • Create function > Select the function trigger type > Cloud Pub/Sub
+  • Create a topic > Pub/Sub topic which will trigger this cloud function > Save
   • Give it an appropriate name and click create topic
   • Connections tab > Allow internal traffic only
 ```
@@ -98,8 +98,8 @@ Scheduler settings:
 
 ```bash
 Function settings:
-	• Create function > Select the function trigger type > Cloud Pub/Sub
-	• Create a topic > Pub/Sub topic which will trigger this cloud function > Save
+  • Create function > Select the function trigger type > Cloud Pub/Sub
+  • Create a topic > Pub/Sub topic which will trigger this cloud function > Save
   • Give it an appropriate name and click create topic
   • Connections tab > Allow internal traffic only
   • Runtime environement > Python 3.9 > Deploy
