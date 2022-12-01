@@ -38,6 +38,7 @@ class DB:
         """
         cursor = conn.cursor()
         try:
+            print('Executing Query')
             cursor.execute(select_query)
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error: %s" % error)
@@ -46,9 +47,11 @@ class DB:
         
         # Naturally we get a list of tupples
         tupples = cursor.fetchall()
+        print('Execution Successful')
         cursor.close()
         
         # We just need to turn it into a pandas dataframe
+        print('Creating raw dataframe')
         df = pd.DataFrame(tupples, columns=column_names)
         return df
 
