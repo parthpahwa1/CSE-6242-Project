@@ -109,7 +109,7 @@ Function settings:
 
 [AWS RDS](https://github.com/awslabs/rds-support-tools) is allowing us to have a self-managed and scaled database in the cloud to retrieve this instant data from Twitch.
 
-We use [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
+We used [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
 
 ```bash
 RDS settings:
@@ -126,7 +126,7 @@ RDS settings:
 
 Last  but not least, we are pushing this temporary data to [PostgreSQL](https://github.com/awslabs/rds-support-tools/tree/main/postgres) which is accumulating this data to previous retrieval to form an entire database online and easily accessible. 
 
-We use [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
+We used [AWS Academy Learner Labs](https://awsacademy.instructure.com/)
 
 ```bash
 Postgres settings
