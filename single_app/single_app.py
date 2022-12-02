@@ -115,6 +115,7 @@ class Inference:
     def write_to_DB(self, df):
         print("push_gameids_to_SQL")
         game_df = df
+        print(game_df)
         engine = create_engine('postgresql://twitch.caampywfg0rz.us-east-1.rds.amazonaws.com:5432/Twitch?user=GaTech_team_96&password=i-love-my-coffee-without-milk-and-sugar-at-800AM')
         game_df.to_sql('user_recommendation', engine, if_exists='append', index=False)
         engine.dispose()
