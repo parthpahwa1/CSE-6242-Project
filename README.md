@@ -167,6 +167,8 @@ The tokens have been provided in the file directly. They will be change after th
 
 ### 2.2. Environment
 
+If you wish to run the codes, you would need the below specifications.
+
 Requires Python 3.9
 ```bash
   python --version
@@ -199,9 +201,12 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/#/sit
 
 ## Execution
 
-nothing yet
+Website
 
-
+| Parameter | Input     |
+| :-------- | :------- | 
+| `username` | `grading@gatech.edu` | 
+| `Password` | `Fullmarks100%` | 
 
 
 
