@@ -203,6 +203,14 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/#/sit
 
 ### 3.1 Training
 
+```
+from MAB import MAB
+from train import Train
+
+train_data = Train().run()
+model.train(final_data)
+```
+
 The training consist of 3 parts
 1. Fetching data from data base: fetch_data.py 
 2. Cleaning and processing data: process_data.py
@@ -234,6 +242,24 @@ class MAB
 
 
 ### 3.2 Inference
+
+
+```
+import pandas as pd
+from predict import Inference
+from MAB import MAB
+import numpy as np
+
+date_time = pd.to_datetime(np.datetime64('now'))
+data, timesplit = Inference().fetch_data(date_time)
+
+preference=np.array([1./6.]*6)
+prediction_dict = MAB().predict(data[data['time_logged_encoded'] == 1].reset_index(drop=True),
+           timesplit = timesplit,
+        preference=preference
+)
+
+```
 
 The inference of 3 parts
 1. Fetching data from data base: fetch_data.py 
