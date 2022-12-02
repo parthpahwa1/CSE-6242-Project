@@ -201,6 +201,52 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/#/sit
 
 ## Execution
 
+### 3.1 Training
+
+The training consist of 3 parts
+1. Fetching data from data base: fetch_data.py 
+2. Cleaning and processing data: process_data.py
+3. Training Multi Armed Bandits: MAB.py
+
+### 3.1.1 fetch_data.py
+
+class DB
+- connect: establishes connection with the SQL DB
+- postgresql_to_dataframe: accepts SQL query as input and fetches data from the SQL DB
+
+### 3.1.2 process_data.py
+
+class ProcessStreamData
+- clean_time_fields: converts time fields to numpy dattime64
+- convert_maturity_ratings_to_float: converts maturity boolean to float (1 mature content, 0 not mature)
+- filter_for_language: filters for only english streams
+- create_time_chunks: maps log time hour to a integer between 0 and 5 (inclusive)
+- get_sentiment: maps the stream title to sentiment score
+- perform_feature_engineering: aggregates stream level data to game level data and generates the 10 dim feature vector
+
+
+### 3.1.3 MAB.py
+
+class MAB
+- init_train_data: accepts training data as input, generates the mapping from gamenames to arms and games applicable for each timeslot
+- train: for each timeslot uses standard sclaer to scalarize data, samples preferences and calls the training algorithm
+- lin_ucb: MAB trianing algorithm
+
+
+### 3.2 Inference
+
+The inference of 3 parts
+1. Fetching data from data base: fetch_data.py 
+2. Cleaning and processing data: process_data.py
+3. Predicting: MAB.py
+
+Parts 1 and 2 are similar to training.
+
+### 3.2.1 Prediction MAB.py
+
+class MAB
+- predict: loads the pretrained models and metadata from Resources and generates the predictions 
+
 Website
 
 | Parameter | Input     |
