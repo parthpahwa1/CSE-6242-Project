@@ -2,17 +2,13 @@ import requests
 import json
 import pandas as pd
 import time
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
 import psycopg2 as pg
 from sqlalchemy import create_engine
 
-
 # Twitch Client ID
-clientID = 'qvsl21co22jan49fwd6tn0mw5dohjb'
+clientID = 'zmy348wal3qwmoeum39p6pt9n8zm6k'
 client_id = clientID
-secret = "7jy9s6ah91zhig2783bavrua3h3y7t"
+secret = "48gq7a9yp7fsxxxlu7zfl21e5eu3lt"
 
 #Request app access token
 url = 'https://id.twitch.tv/oauth2/token'
@@ -24,6 +20,7 @@ app_access_token = json.loads(result.text)["access_token"]
 token_type = json.loads(result.text)["token_type"].capitalize()
 
 def get_top_100_games(clientID = clientID , app_access_token = app_access_token):
+    print("get_top_100_games")
     ''' Given Client ID, pings twitch API for top 100 games. Returns the entire request object'''
     # Need to pass client ID with each request in header
     fullToken = "Bearer " + app_access_token
@@ -35,6 +32,7 @@ def get_top_100_games(clientID = clientID , app_access_token = app_access_token)
     return r
 
 def get_game_ids(clientID = clientID,app_access_token = app_access_token):
+    print("get_game_ids")
     ''' Grabs top 100 games, then grabs top 100 ID's '''
     top_100 = get_top_100_games()
 
@@ -54,12 +52,16 @@ def get_game_ids(clientID = clientID,app_access_token = app_access_token):
     return r
 
 def push_gameids_to_SQL(r):
+    print("push_gameids_to_SQL")
     game_df = pd.json_normalize(json.loads(r.text)['data'])
     curr_time = time.strftime("%Y-%m-%d %H:%M:%S",time.gmtime())
     game_df['time_logged'] = curr_time
+    
     game_df.rename(columns = {'id': 'game_id','name': 'game_name','box_art_url': 'pic_url'},inplace = True)
-    engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
-    game_df.to_sql('game_info', engine, if_exists='append',index=False)
+
+    df1 = game_df[['game_id', 'game_name','pic_url','time_logged']]
+    engine = create_engine('postgresql://twitch.caampywfg0rz.us-east-1.rds.amazonaws.com:5432/Twitch?user=GaTech_team_96&password=i-love-my-coffee-without-milk-and-sugar-at-800AM')
+    df1.to_sql('game_info', engine, if_exists='append',index=False)
     engine.dispose()
 
 def check_api_limit_reached(req, ignore_limit = False):
@@ -74,6 +76,7 @@ def check_api_limit_reached(req, ignore_limit = False):
     return int(req.headers['Ratelimit-Remaining'])
 
 def get_top_100_streamers_for_each_game(game_dict):
+    print("get_top_100_streamers_for_each_game")
     '''Given the twitch response for top 100 games, this will cycle through and pull the top 100
     streamers for each game, stored under a dict entry of the title of that game'''
     stream_dict = dict()
@@ -88,6 +91,7 @@ def get_top_100_streamers_for_each_game(game_dict):
     return stream_dict
 
 def json_to_dataframe(json_data):
+    print("json_to_dataframe")
     total_streams_df = pd.DataFrame(
         columns = ['game_id','id','language','started_at','title','type','user_id','user_name','viewer_count'])
     for game_key in list(json_data.keys()):
@@ -97,17 +101,38 @@ def json_to_dataframe(json_data):
     return total_streams_df
 
 
-top_100_game_ids = get_game_ids()
-push_gameids_to_SQL(top_100_game_ids)
+def run_all(event,context):
+    print("run started")
+    clientID = 'zmy348wal3qwmoeum39p6pt9n8zm6k'
+    client_id = clientID
+    secret = "48gq7a9yp7fsxxxlu7zfl21e5eu3lt"
+    # Request app access token
+    url = 'https://id.twitch.tv/oauth2/token'
+    body = 'client_id={0}&client_secret={1}&grant_type={2}'.format(client_id, secret, "client_credentials")
 
-r = get_top_100_games()
-r_dict = json.loads(r.text)
-stream_dict = get_top_100_streamers_for_each_game(r_dict)
-df=json_to_dataframe(stream_dict)
+    result = requests.post(url, data=body)
+    # Transform the result into json and get the app access token and token type
+    global app_access_token
+    global token_type
 
-df.rename(columns = {'id': 'stream_id','type': 'stream_type'},inplace = True)
-curr_time = time.strftime("%Y-%m-%d %H:%M:%S",time.gmtime())
-df['time_logged'] = curr_time
+    app_access_token = json.loads(result.text)["access_token"]
+    token_type = json.loads(result.text)["token_type"].capitalize()
 
-engine = create_engine('postgresql://199.247.28.78/Twitch?user=postgres&password=postgres')
-df.to_sql('stream_data', engine, if_exists='append',index=False)
+    top_100_game_ids = get_game_ids()
+    push_gameids_to_SQL(top_100_game_ids)
+
+    r = get_top_100_games()
+    r_dict = json.loads(r.text)
+    stream_dict = get_top_100_streamers_for_each_game(r_dict)
+    df = json_to_dataframe(stream_dict)
+
+    df.rename(columns={'id': 'stream_id', 'type': 'stream_type'}, inplace=True)
+    curr_time = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    df['time_logged'] = curr_time
+
+    engine = create_engine('postgresql://twitch.caampywfg0rz.us-east-1.rds.amazonaws.com:5432/Twitch?user=GaTech_team_96&password=i-love-my-coffee-without-milk-and-sugar-at-800AM')
+    df.to_sql('stream_data', engine, if_exists='append', index=False)
+    print("finished")
+
+
+
