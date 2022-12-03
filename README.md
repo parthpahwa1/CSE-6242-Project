@@ -17,13 +17,15 @@ Moreover, we are helping streaming players develop their channel by picking the 
     - [AWS - RDS](#15-aws---rds)
     - [AWS - PostgreSQL](#16-aws---postgresql)
     - [Tableau](#17-tableau)
+    - [Code](#18-code)
+    - [Inference](#19-inference)
+    - [Website](#110-website)
  - [Installation](#installation)
     - [Tokens](#21-tokens)
     - [Environment](#22-environment)
     - [Tableau Dashboard](#23-tableau-dashboard)
  - [Execution](#execution)
-    - [Website](#31-website)
-    - [code](#32-code)
+
 
 
 
@@ -159,7 +161,99 @@ Tableau settings:
   • published the dashboard > to be viewed only
 ```
 
+### 1.8 Code
 
+
+If you wish to see the code, you may check the three folders: `single_app` , `Tableau`, `website`
+
+Application\
+• Open the folder `single_app` in your python environment\
+• Please run the following code in terminal before running the `single_app.py` notebook:
+```bash
+  pip install -r requirements.txt
+```
+
+Then you have an explanation of the code below:
+
+```
+from MAB import MAB
+from train import Train
+
+train_data = Train().run()
+model.train(final_data)
+```
+
+The training consist of 3 parts
+1. Fetching data from data base: fetch_data.py 
+2. Cleaning and processing data: process_data.py
+3. Training Multi Armed Bandits: MAB.py
+
+### 1.8.1 fetch_data.py
+
+class DB
+- connect: establishes connection with the SQL DB
+- postgresql_to_dataframe: accepts SQL query as input and fetches data from the SQL DB
+
+### 1.8.2 process_data.py
+
+class ProcessStreamData
+- clean_time_fields: converts time fields to numpy dattime64
+- convert_maturity_ratings_to_float: converts maturity boolean to float (1 mature content, 0 not mature)
+- filter_for_language: filters for only english streams
+- create_time_chunks: maps log time hour to a integer between 0 and 5 (inclusive)
+- get_sentiment: maps the stream title to sentiment score
+- perform_feature_engineering: aggregates stream level data to game level data and generates the 10 dim feature vector
+
+
+### 1.8.3 MAB.py
+
+class MAB
+- init_train_data: accepts training data as input, generates the mapping from gamenames to arms and games applicable for each timeslot
+- train: for each timeslot uses standard sclaer to scalarize data, samples preferences and calls the training algorithm
+- lin_ucb: MAB trianing algorithm
+
+
+### 1.9 Inference
+
+
+```
+import pandas as pd
+from predict import Inference
+from MAB import MAB
+import numpy as np
+
+date_time = pd.to_datetime(np.datetime64('now'))
+data, timesplit = Inference().fetch_data(date_time)
+
+preference=np.array([1./6.]*6)
+prediction_dict = MAB().predict(data[data['time_logged_encoded'] == 1].reset_index(drop=True),
+           timesplit = timesplit,
+        preference=preference
+)
+
+```
+
+The inference of 3 parts
+1. Fetching data from data base: fetch_data.py 
+2. Cleaning and processing data: process_data.py
+3. Predicting: MAB.py
+
+Parts 1 and 2 are similar to training.
+
+### 1.9.1 Prediction MAB.py
+
+class MAB
+- predict: loads the pretrained models and metadata from Resources and generates the predictions 
+
+
+
+### 1.10 Website
+
+The website was coded under `CODE` > `website` > `uniDash` > `pages`  with all the `.cshtml` files
+
+The dashboards were embeded directly into the `Stats.cshtml` and `Recommendations.cshtml`
+
+`Recommendations.cshtml` will push the `main.py` to the server that will run the algorithm to push the outputs into the PostgreSQL within `user_recommendation` table.
 
 ## Installation
 
@@ -196,13 +290,17 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
 | `Username` | `GaTech_team_96` | 
 | `Password` | `i-love-my-coffee-without-milk-and-sugar-at-800AM` | 
 
-
+*if you wish to see the tables from PostgreSQL, you can use the same credentials in the software [pgAdmin 4 v6](https://www.pgadmin.org/download/) \
+  • enter the credentials above
+  • click on the `Twitch` arrow > `Schemas` > `Tables`\
+  • otherwise, you can make SQL requires to the database by clicking on the `>_` logo in the Browser menu
 
 ## Execution
 
 ### 3.1. Website
 
 1. Click on our [Website](http://unidash.thebatcave.click) \
+  • disable any adblockers as it may affect the viewing and display of the dashboards  \
   • click on `login` > on the top right corner \
   • use the below credentials
 
@@ -212,12 +310,23 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
       | `Password` | `Fullmarks100%` | 
 
 
-2. You can access to our Game Statistics Dashboard on our [Website - Game Stats](http://unidash.thebatcave.click/Stats)\
+2. You can access to our `Game Statistics Dashboard` on our [Website - Game Stats](http://unidash.thebatcave.click/Stats)\
+  • use the below credentials if Tableau prompt you
+      | Parameter | Input     |
+      | :-------- | :------- | 
+      | `username` | `deangarmwork@gmail.com` | 
+      | `Password` | `Fullmarks100%` | 
+
   • if you cannot view on the website you can see it in Tableau Cloud @ [GameStatisticsDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard)\
   • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v1
 
 
-3. You can access to our Game Recommendation Dashboard on our [Website - Game Recommendation](http://unidash.thebatcave.click/Recommendations)\
+3. You can access to our `Game Recommendation Dashboard` on our [Website - Game Recommendation](http://unidash.thebatcave.click/Recommendations)\
+  • use the below credentials if Tableau prompt you
+      | Parameter | Input     |
+      | :-------- | :------- | 
+      | `username` | `deangarmwork@gmail.com` | 
+      | `Password` | `Fullmarks100%` | 
   • if you cannot view on the website you can see it in Tableau Cloud @ [GameRecommendationDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults)\
   • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v2
 
@@ -225,92 +334,7 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
 if you need to enter the logins for the database, please refer to [Tableau Dashboard](#23-tableau-dashboard)
 if you wish the sithe code for the website, you may check the folder `website`
 
-\
-*
 
-### 3.2 Code
-
-
-If you wish to see the code, you may check the three folders: `single_app` , `Tableau`, `website`
-
-Application\
-• Open the folder `single_app` in your python environment\
-• Please run the following code in terminal before running the `single_app.py` notebook:
-```bash
-  pip install -r requirements.txt
-```
-
-Then you have an explanation of the code below:
-
-```
-from MAB import MAB
-from train import Train
-
-train_data = Train().run()
-model.train(final_data)
-```
-
-The training consist of 3 parts
-1. Fetching data from data base: fetch_data.py 
-2. Cleaning and processing data: process_data.py
-3. Training Multi Armed Bandits: MAB.py
-
-### 3.1.1 fetch_data.py
-
-class DB
-- connect: establishes connection with the SQL DB
-- postgresql_to_dataframe: accepts SQL query as input and fetches data from the SQL DB
-
-### 3.1.2 process_data.py
-
-class ProcessStreamData
-- clean_time_fields: converts time fields to numpy dattime64
-- convert_maturity_ratings_to_float: converts maturity boolean to float (1 mature content, 0 not mature)
-- filter_for_language: filters for only english streams
-- create_time_chunks: maps log time hour to a integer between 0 and 5 (inclusive)
-- get_sentiment: maps the stream title to sentiment score
-- perform_feature_engineering: aggregates stream level data to game level data and generates the 10 dim feature vector
-
-
-### 3.1.3 MAB.py
-
-class MAB
-- init_train_data: accepts training data as input, generates the mapping from gamenames to arms and games applicable for each timeslot
-- train: for each timeslot uses standard sclaer to scalarize data, samples preferences and calls the training algorithm
-- lin_ucb: MAB trianing algorithm
-
-
-### 3.2 Inference
-
-
-```
-import pandas as pd
-from predict import Inference
-from MAB import MAB
-import numpy as np
-
-date_time = pd.to_datetime(np.datetime64('now'))
-data, timesplit = Inference().fetch_data(date_time)
-
-preference=np.array([1./6.]*6)
-prediction_dict = MAB().predict(data[data['time_logged_encoded'] == 1].reset_index(drop=True),
-           timesplit = timesplit,
-        preference=preference
-)
-
-```
-
-The inference of 3 parts
-1. Fetching data from data base: fetch_data.py 
-2. Cleaning and processing data: process_data.py
-3. Predicting: MAB.py
-
-Parts 1 and 2 are similar to training.
-
-### 3.2.1 Prediction MAB.py
-
-class MAB
-- predict: loads the pretrained models and metadata from Resources and generates the predictions 
 
 
 
