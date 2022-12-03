@@ -334,7 +334,7 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
 
     • a pop-out from Tableau may come up > Allow Extension > click `OK`\
     • if you cannot view on the website you can see it in Tableau Cloud @ [GameStatisticsDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard)\
-    • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v1
+    • Otherwise, you may view it in the folder > CODE > Tableau > `Twitch_v1.twbx`
 
 
 3. You can access to our `Game Recommendation Dashboard` on our [Website - Game Recommendation](http://unidash.thebatcave.click/Recommendations)\
@@ -346,7 +346,7 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
 
     • a pop-out from Tableau may come up > Allow Extension > click `OK`\
     • if you cannot view on the website you can see it in Tableau Cloud @ [GameRecommendationDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults)\
-    • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v2
+    • Otherwise, you may view it in the folder > CODE > Tableau > `Twitch_v2.twbx`
 
 \
 *if you need to enter the logins for the database, please refer to [Tableau Dashboard](#23-tableau-dashboard)\
