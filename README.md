@@ -271,6 +271,11 @@ The tokens have been provided in the file directly. They will be change after th
 
 ### 2.2. Environment
 
+Requires an online browser
+```bash
+  Google Chrome / Firefox / Opera
+```
+
 If you wish to run the codes, you would need the below specifications.
 
 Requires Python 3.9
@@ -278,7 +283,10 @@ Requires Python 3.9
   python --version
 ```
 
-
+Please run the following code in terminal when you are in the `CODE` folder directory:
+```bash
+  pip install -r requirements.txt
+```
 
 ### 2.3. Tableau Dashboard
 
@@ -318,28 +326,31 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hug
 
 
 2. You can access to our `Game Statistics Dashboard` on our [Website - Game Stats](http://unidash.thebatcave.click/Stats)\
-  • use the below credentials if Tableau prompt you
+  • use the below credentials if Tableau Cloud prompt you
       | Parameter | Input     |
       | :-------- | :------- | 
       | `username` | `deangarmwork@gmail.com` | 
       | `Password` | `Fullmarks100%` | 
 
-  • if you cannot view on the website you can see it in Tableau Cloud @ [GameStatisticsDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard)\
-  • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v1
+    • a pop-out from Tableau may come up > Allow Extension > click `OK`\
+    • if you cannot view on the website you can see it in Tableau Cloud @ [GameStatisticsDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard)\
+    • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v1
 
 
 3. You can access to our `Game Recommendation Dashboard` on our [Website - Game Recommendation](http://unidash.thebatcave.click/Recommendations)\
-  • use the below credentials if Tableau prompt you
+  • use the below credentials if Tableau Cloud prompt you
       | Parameter | Input     |
       | :-------- | :------- | 
       | `username` | `deangarmwork@gmail.com` | 
       | `Password` | `Fullmarks100%` | 
-  • if you cannot view on the website you can see it in Tableau Cloud @ [GameRecommendationDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults)\
-  • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v2
+
+    • a pop-out from Tableau may come up > Allow Extension > click `OK`\
+    • if you cannot view on the website you can see it in Tableau Cloud @ [GameRecommendationDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults)\
+    • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v2
 
 \
-if you need to enter the logins for the database, please refer to [Tableau Dashboard](#23-tableau-dashboard)
-if you wish the sithe code for the website, you may check the folder `website`
+*if you need to enter the logins for the database, please refer to [Tableau Dashboard](#23-tableau-dashboard)\
+**if you wish to see the code for the website, you may check the folder `website`
 
 
 
