@@ -22,6 +22,9 @@ Moreover, we are helping streaming players develop their channel by picking the 
     - [Environment](#22-environment)
     - [Tableau Dashboard](#23-tableau-dashboard)
  - [Execution](#execution)
+    - [Website](#31-website)
+    - [code](#32-code)
+
 
 
 
@@ -174,10 +177,6 @@ Requires Python 3.9
   python --version
 ```
 
-Please run the following code in terminal before running the `main.ipynb` notebook:
-```bash
-  pip install -r requirements.txt
-```
 
 
 ### 2.3. Tableau Dashboard
@@ -186,7 +185,7 @@ Within the created website, we have embbed a trial tableau cloud account that wi
 
 However, if you are facing an issue view the dashboard, you can still connect to Tableau Cloud with your own account to see the two dashboard: `Twitch_Game_Statistics.twbx` & `Twitch_Game_Recommendations.twbx`
 
-When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/#/site/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard?:iid=3) or [Twitch_Game_Recommendations](https://dub01.online.tableau.com/#/site/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults?:iid=8), if the PostgreSQL ask you for the credentials to refresh the database, please enter the following in the general tab:
+When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard) or [Twitch_Game_Recommendations](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults), if the PostgreSQL ask you for the credentials to refresh the database, please enter the following in the general tab:
 
 | Parameter | Input     |
 | :-------- | :------- | 
@@ -201,7 +200,47 @@ When opening the [Twitch_Game_Statistics](https://dub01.online.tableau.com/#/sit
 
 ## Execution
 
-### 3.1 Training
+### 3.1. Website
+
+1. Click on our [Website](http://unidash.thebatcave.click) \
+  • click on `login` > on the top right corner \
+  • use the below credentials
+
+      | Parameter | Input     |
+      | :-------- | :------- | 
+      | `username` | `grading@gatech.edu` | 
+      | `Password` | `Fullmarks100%` | 
+
+
+2. You can access to our Game Statistics Dashboard on our [Website - Game Stats](http://unidash.thebatcave.click/Stats)\
+  • if you cannot view on the website you can see it in Tableau Cloud @ [GameStatisticsDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Statistics/GameStatisticsDashboard)\
+  • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v1
+
+
+3. You can access to our Game Recommendation Dashboard on our [Website - Game Recommendation](http://unidash.thebatcave.click/Recommendations)\
+  • if you cannot view on the website you can see it in Tableau Cloud @ [GameRecommendationDashboard](https://dub01.online.tableau.com/t/hugodupouy/views/Twitch_Game_Recommendations/GameRecommandationResults)\
+  • Otherwise, you may view it in the folder > CODE > Tableau > Twitch_v2
+
+\
+if you need to enter the logins for the database, please refer to [Tableau Dashboard](#23-tableau-dashboard)
+if you wish the sithe code for the website, you may check the folder `website`
+
+\
+*
+
+### 3.2 Code
+
+
+If you wish to see the code, you may check the three folders: `single_app` , `Tableau`, `website`
+
+Application\
+• Open the folder `single_app` in your python environment\
+• Please run the following code in terminal before running the `single_app.py` notebook:
+```bash
+  pip install -r requirements.txt
+```
+
+Then you have an explanation of the code below:
 
 ```
 from MAB import MAB
@@ -272,13 +311,6 @@ Parts 1 and 2 are similar to training.
 
 class MAB
 - predict: loads the pretrained models and metadata from Resources and generates the predictions 
-
-Website
-
-| Parameter | Input     |
-| :-------- | :------- | 
-| `username` | `grading@gatech.edu` | 
-| `Password` | `Fullmarks100%` | 
 
 
 
