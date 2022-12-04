@@ -260,7 +260,7 @@ The website was coded under `CODE` > `website` > `uniDash` > `pages`  with all t
 
 The dashboards were embeded directly into the `Stats.cshtml` and `Recommendations.cshtml`
 
-`Recommendations.cshtml` will push the `main.py` to the server that will run the algorithm to push the outputs into the PostgreSQL within `user_recommendation` table.
+`Recommendations.cshtml` will push the `single_app.py` to the server that will run the algorithm to push the outputs into the PostgreSQL within `user_recommendation` table.
 
 ## Installation
 
